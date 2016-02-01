@@ -31,7 +31,7 @@ Recreate as much of the original game as is reasonable in the one week we have a
 
 ### Questions and Answers
 **How does scoring work?**
-Scoring happens when two tiles of the same value are combined. The value of those two tiles are added to your total score.
+Scoring happens when two tiles of the same value are combined. The value of those two tiles are added to your total score.  
 **When do tiles enter the game?**  
 Every time you move on the board, a new tile enters the game. It can be a 2 or a 4, not sure if they are equally likely. It is seemingly placed in a random empty spot on the board, after the pre-existing tiles have already moved.  
 **How do you know if you've won?**  
