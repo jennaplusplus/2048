@@ -37,7 +37,7 @@ Every time you move on the board, a new tile enters the game. It can be a 2 or a
 **How do you know if you've won?**  
 You win the game when one of your tiles on the board has a value of 2048.  
 **How do you know if you've lost?**  
-You lose when you cannot add another tile to the board (it’s full).
+You lose when you cannot add another tile to the board (it’s full).  
 **What makes tiles move?**  
 Arrow keys- up, down, left, right.  
 **What happens when they move?**  
