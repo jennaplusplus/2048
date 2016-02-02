@@ -22,8 +22,8 @@ Game.prototype.moveTile = function(tile, direction) {
 
 Game.prototype.get_empty_spaces = function() {
   var indexes = [], i, j;
-  for (i = 0; i < 4; i++) {
-    for (j = 0; j < 4; j++) {
+  for (i = 0; i < this.board.length; i++) {
+    for (j = 0; j < this.board[i].length; j++) {
       if (this.board[i][j] === 0) {
         indexes.push([i, j]);
       }
