@@ -1,5 +1,7 @@
 var Game = function() {
   this.board = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]];
+  this.addTile();
+  this.addTile();
 };
 
 Game.prototype.moveTile = function(tile, direction) {
