@@ -5,28 +5,49 @@ var Game = function() {
 };
 
 Game.prototype.moveTile = function(tile, direction) {
+  var b = this.board;
+  var locations = [];
+  for (var t = 0; t < tile.length; t++) {
+    var curr = tile[t];
+    locations.push([$(curr).attr("data-row").replace("r", ""), $(curr).attr("data-col").replace("c", "")]);
+  }
+
   switch(direction) {
     case 38: //up
       console.log('up');
 
-      var currentTile;
-
-      for (var i = 1; i < this.board.length; i++) {
-        for (var j = 0; j < this.board[i].length; j++) {
-          if (this.board[i][j] !== 0) {
-            currentTile = $('.tile[data-row="r' + i + '"][data-col="c' + j + '"]')[0]; // grab the tile that we're talking about
-            var currentRow = i;
-            // move it up as far as allowed
-            while ((currentRow-1) >= 0 && this.board[currentRow-1][j] === 0) {
-              this.board[currentRow-1][j] = this.board[currentRow][j];  // set value of new space
-              this.board[currentRow][j] = 0; // vacate current space
-              $(currentTile).attr("data-row", "r" + (currentRow-1));  // update tile attributes
-              currentRow--;
-            }
-          }
+      locations.sort();
+      locations.forEach(function(loc) {
+        var currentTile = $('.tile[data-row="r' + loc[0] + '"][data-col="c' + loc[1] + '"]')[0];
+        var currentRow = loc[0];
+        while ((currentRow-1) >= 0 && b[currentRow-1][loc[1]] === 0) {
+          b[currentRow-1][loc[1]] = b[currentRow][loc[1]];  // set value of new space
+          b[currentRow][loc[1]] = 0; // vacate current space
+          $(currentTile).attr("data-row", "r" + (currentRow-1));  // update tile attributes
+          currentRow--;
         }
-      }
+      });
+
+      // var currentTile;
+      //
+      // for (var i = 1; i < this.board.length; i++) {
+      //   for (var j = 0; j < this.board[i].length; j++) {
+      //     if (this.board[i][j] !== 0) {
+      //       currentTile = $('.tile[data-row="r' + i + '"][data-col="c' + j + '"]')[0]; // grab the tile that we're talking about
+      //       var currentRow = i;
+      //       // move it up as far as allowed
+      //       while ((currentRow-1) >= 0 && this.board[currentRow-1][j] === 0) {
+      //         this.board[currentRow-1][j] = this.board[currentRow][j];  // set value of new space
+      //         this.board[currentRow][j] = 0; // vacate current space
+      //         $(currentTile).attr("data-row", "r" + (currentRow-1));  // update tile attributes
+      //         currentRow--;
+      //       }
+      //     }
+      //   }
+      // }
+
       break;
+
     case 40: //down
       console.log('down');
 
@@ -46,6 +67,7 @@ Game.prototype.moveTile = function(tile, direction) {
         }
       }
       break;
+
     case 37: //left
       console.log('left');
 
@@ -142,7 +164,7 @@ $(document).ready(function() {
       var tile = $('.tile');
 
       game.moveTile(tile, event.which);
-      game.addTile();
+      // game.addTile();
     }
   });
 });
