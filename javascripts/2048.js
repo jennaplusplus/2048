@@ -50,7 +50,12 @@ Game.prototype.addTile = function () {
   var dest = avail[Math.floor(Math.random() * avail.length)];
 
   // add tile to the board in an empty space
-  $("#gameboard").append("<div class='tile' data-row='r" + dest[0] + "', data-col='c" + dest[1] + "' data-val='" + val + "'>" + val + "</div>");
+  var $div = $('<div class="tile"></div>');
+  $div.attr("data-row", "r" + dest[0]);
+  $div.attr("data-col", "c" + dest[1]);
+  $div.attr("data-val", val);
+  $div.html(val);
+  $("#gameboard").append($div);
 
   // update board structure with placement of new tile
   this.board[dest[0]][dest[1]] = val;
