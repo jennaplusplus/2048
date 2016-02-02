@@ -1,7 +1,7 @@
 var Game = function() {
   this.board = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]];
   this.addTile();
-  this.addTile();
+  // this.addTile();
 };
 
 Game.prototype.moveTile = function(tile, direction) {
@@ -15,13 +15,18 @@ Game.prototype.moveTile = function(tile, direction) {
         for (var j = 0; j < this.board[i].length; j++) {
           if (this.board[i][j] !== 0) {
             currentTile = $('.tile[data-row="r' + i + '"][data-col="c' + j + '"]')[0]; // grab the tile that we're talking about
-
+            var currentRow = i;
+            console.log("this is the current row " + currentRow);
             // move it up as far as allowed
-            while (this.board[i-1][j] === 0 && (i-1) >= 0) {
-              this.board[i-1][j] = this.board[i][j];  // set value of new space
-              this.board[i][j] = 0;                   // vacate current space
-              $(currentTile).attr("data-row", "r" + (i-1));  // update tile attributes
-              i--;
+            while (this.board[currentRow-1][j] === 0 && (currentRow-1) >= 0) {
+              console.log("this is the board " + this.board);
+              this.board[currentRow-1][j] = this.board[currentRow][j];  // set value of new space
+              this.board[currentRow][j] = 0; // vacate current space
+              console.log("this is current row after it increments by 1: " + currentRow);
+              $(currentTile).attr("data-row", "r" + (currentRow-1));  // update tile attributes
+              console.log("this is the current tile's html " + currentTile);
+              currentRow--;
+              console.log("this is the current row after the while loop is complete: " + currentRow);
             }
           }
         }
