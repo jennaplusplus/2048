@@ -11,17 +11,17 @@ Game.prototype.moveTile = function(tile, direction) {
 
       var currentTile;
 
-      for (var i = 0; i < this.board.length; i++) {
+      for (var i = 1; i < this.board.length; i++) {
         for (var j = 0; j < this.board[i].length; j++) {
           if (this.board[i][j] !== 0) {
             currentTile = $('.tile[data-row="r' + i + '"][data-col="c' + j + '"]')[0]; // grab the tile that we're talking about
 
             // move it up as far as allowed
-            while (this.board[i-1][j] === 0 && this.board[i-1] >= 0) {
+            while (this.board[i-1][j] === 0 && (i-1) >= 0) {
               this.board[i-1][j] = this.board[i][j];  // set value of new space
               this.board[i][j] = 0;                   // vacate current space
               $(currentTile).attr("data-row", "r" + (i-1));  // update tile attributes
-              i++;
+              i--;
             }
           }
         }
