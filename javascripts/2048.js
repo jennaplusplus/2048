@@ -33,18 +33,27 @@ Game.prototype.get_empty_spaces = function() {
 };
 
 Game.prototype.addTile = function () {
-  // create a tile with a value of 2 or 4
-  // just do 2 for now
-  var tileValue = 2;
+  // create a tile with a value of 2 or 4, based on weighted probability
+  var rand = Math.random();
+
+  var val;
+  if (rand < 0.9) {
+    val = 2;
+  } else {
+    val = 4;
+  }
 
   // figure out which spaces are empty
+  var avail = this.get_empty_spaces();
 
+  // pick one (each is in the form [row, column])
+  var dest = avail[Math.floor(Math.random() * avail.length)];
 
   // add tile to the board in an empty space
-  $("#gameboard").append("<div class='tile' data-row='r0', data-col='c0' data-val='2'>2</div>");
+  $("#gameboard").append("<div class='tile' data-row='r" + dest[0] + "', data-col='c" + dest[1] + "' data-val='" + val + "'>" + val + "</div>");
 
   // update board structure with placement of new tile
-
+  this.board[dest[0]][dest[1]] = val;
 };
 
 $(document).ready(function() {
