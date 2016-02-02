@@ -9,20 +9,24 @@ Game.prototype.moveTile = function(tile, direction) {
     case 38: //up
       console.log('up');
 
+      var currentTile;
+
       for (var i = 0; i < this.board.length; i++) {
         for (var j = 0; j < this.board[i].length; j++) {
           if (this.board[i][j] !== 0) {
-            var tile = $('.tile[data-row="r[' + i + ']"][data-col="c[' + j + ']"]'); // grab the tile that we're talking about
+            currentTile = $('.tile[data-row="r' + i + '"][data-col="c' + j + '"]')[0]; // grab the tile that we're talking about
 
             // move it up as far as allowed
             while (this.board[i-1][j] === 0 && this.board[i-1] >= 0) {
-              $(tile).attr("data-row", "r" + (i-1));
+              this.board[i-1][j] = this.board[i][j];  // set value of new space
+              this.board[i][j] = 0;                   // vacate current space
+              $(currentTile).attr("data-row", "r" + (i-1));  // update tile attributes
+              i++;
             }
           }
         }
       }
 
-      $('.tile').attr("data-row", "r0");
       break;
     case 40: //down
       console.log('down');
