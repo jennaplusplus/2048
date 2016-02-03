@@ -4,8 +4,13 @@ var Game = function() {
   this.addTile();
 };
 
+Game.prototype.getTile = function(row, col) {
+  return '.tile[data-row="r' + row + '"][data-col="c' + col + '"]';
+};
+
 Game.prototype.moveTile = function(tile, direction) {
   var b = this.board;
+  var g = this;
   var currentTile;
   var currentRow;
   var currentCol;
@@ -21,7 +26,7 @@ Game.prototype.moveTile = function(tile, direction) {
 
       locations.sort();
       locations.forEach(function(loc) {
-        currentTile = $('.tile[data-row="r' + loc[0] + '"][data-col="c' + loc[1] + '"]')[0];
+        currentTile = $(g.getTile(loc[0],loc[1]))[0];
         currentRow = Number(loc[0]);
         while ((currentRow-1) >= 0 && b[currentRow-1][loc[1]] === 0) {
           b[currentRow-1][loc[1]] = b[currentRow][loc[1]];  // set value of new space
