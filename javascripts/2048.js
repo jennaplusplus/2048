@@ -135,7 +135,7 @@ Game.prototype.addTile = function () {
 $(document).ready(function() {
   console.log("ready to go!");
   // Any interactive jQuery functionality
-  $('button').click(function(){
+  $('#button').click(function(){
     $('.tile').remove();
     game.board = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]];
     game.addTile();
