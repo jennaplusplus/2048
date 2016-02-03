@@ -125,7 +125,8 @@ Game.prototype.addTile = function () {
   $div.attr("data-col", "c" + dest[1]);
   $div.attr("data-val", val);
   $div.html(val);
-  $("#gameboard").append($div);
+  $("#gameboard").append($div.hide());
+  $div.delay(200).fadeIn('fast');
 
   // update board structure with placement of new tile
   this.board[dest[0]][dest[1]] = val;
@@ -142,7 +143,7 @@ $(document).ready(function() {
       var tile = $('.tile');
 
       game.moveTile(tile, event.which);
-      // game.addTile();
+      game.addTile();
     }
   });
 });
