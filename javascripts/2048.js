@@ -1,7 +1,7 @@
 var Game = function() {
-  this.board = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]];
-  this.addTile();
-  this.addTile();
+  this.board = [[0, 0, 0, 0],[2, 0, 0, 0],[2, 0, 0, 0],[0, 0, 0, 0]];
+  // this.addTile();
+  // this.addTile();
 };
 
 Game.prototype.moveTile = function(tile, direction) {
@@ -28,6 +28,35 @@ Game.prototype.moveTile = function(tile, direction) {
           b[currentRow][loc[1]] = 0; // vacate current space
           $(currentTile).attr("data-row", "r" + (currentRow-1));  // update tile attributes
           currentRow--;
+        }
+        if ($(currentTile).attr("data-row").replace("r", "") > 0 && Number($(currentTile).attr("data-val")) === b[currentRow-1][loc[1]]) {
+          console.log("YES");
+
+          // create a new tile
+          var destRow = currentRow - 1;
+          var destCol = loc[1];
+          var destVal = b[currentRow-1][loc[1]] * 2;
+
+          console.log(destRow);
+          console.log(destCol);
+          console.log(destVal);
+
+          var $newTile = $('<div class="tile"></div>');
+          $newTile.attr("data-row", "r" + destRow);
+          $newTile.attr("data-col", "c" + destCol);
+          $newTile.attr("data-val", destVal);
+          $newTile.html(destVal);
+          $("#gameboard").append($newTile.hide());
+          $newTile.delay(200).fadeIn('fast');
+
+          // delete the two other tiles
+          $(currentTile).remove();
+          $('.tile[data-row="r' + destRow + '"][data-col="c' + destCol + '"][data-val="' + (destVal/2) + '"]')[0].remove();
+
+          // update board structure with placement of new tile
+          b[destRow][destCol] = destVal;
+
+          // move up the rest of the tiles
         }
       });
       break;
