@@ -1,7 +1,7 @@
 var Game = function() {
-  this.board = [[0, 0, 0, 0],[2, 0, 0, 0],[2, 0, 0, 0],[0, 0, 0, 0]];
-  // this.addTile();
-  // this.addTile();
+  this.board = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]];
+  this.addTile();
+  this.addTile();
 };
 
 Game.prototype.moveTile = function(tile, direction) {
@@ -55,8 +55,6 @@ Game.prototype.moveTile = function(tile, direction) {
 
           // update board structure with placement of new tile
           b[destRow][destCol] = destVal;
-
-          // move up the rest of the tiles
         }
       });
       break;
