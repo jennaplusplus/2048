@@ -15,10 +15,21 @@ body {
   text-align: center;
 }
 
-button {
-  text-align: center;
-  font-size: 16px;
+#button {
+  background-color: #80C576;
+  border-radius: 3px;
+  width: 100px;
+  height: 40px;
+  margin: auto;
 }
+
+#reset {
+  color: white;
+  font: normal normal 30px/1 "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  text-align: center;
+}
+
 
 .cell {
   background: rgba(238, 228, 218, 0.35);
