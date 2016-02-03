@@ -135,13 +135,19 @@ Game.prototype.addTile = function () {
 $(document).ready(function() {
   console.log("ready to go!");
   // Any interactive jQuery functionality
+  $('button').click(function(){
+    $('.tile').remove();
+    game.board = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]];
+    game.addTile();
+    game.addTile();
+  });
+
   var game = new Game();
 
   $('body').keydown(function(event){
     var arrows = [37, 38, 39, 40];
     if (arrows.indexOf(event.which) > -1) {
       var tile = $('.tile');
-
       game.moveTile(tile, event.which);
       game.addTile();
     }

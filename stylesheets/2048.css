@@ -11,6 +11,15 @@ html {
   width: 18.5rem;
 }
 
+body {
+  text-align: center;
+}
+
+button {
+  text-align: center;
+  font-size: 16px;
+}
+
 .cell {
   background: rgba(238, 228, 218, 0.35);
   border-radius: 0.5rem;
