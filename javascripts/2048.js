@@ -4,6 +4,32 @@ var Game = function() {
   this.addTile();
 };
 
+Game.prototype.isGameLost = function() {
+  var matches;
+
+  if (this.getEmptySpaces().length === 0) {
+    // check if there are any adjacent tiles of the same value
+    matches = 0;
+    for (var i = 0; i < this.board.length - 1; i++) {
+      for (var j = 0; j < this.board[i].length - 1; j++) {
+        if (this.board[i][j] === this.board[i][j+1]) {
+          matches += 1;
+        } else if (this.board[i][j] === this.board[i+1][j]) {
+          matches += 1;
+        }
+      }
+    }
+    if (matches === 0) {
+      console.log("GAME OVER");
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+};
+
 Game.prototype.getTile = function(row, col, val) {
   if (val !== undefined) {
     return '.tile[data-row="r' + row + '"][data-col="c' + col + '"][data-val="' + val + '"]';
@@ -44,7 +70,7 @@ Game.prototype.moveTile = function(tile, direction) {
         var tileCol = $(currentTile).attr("data-col").replace("c", "");
         var tileVal = $(currentTile).attr("data-val");
         var $adjTile = $(g.getTile(tileRow - 1, tileCol));
-        
+
         if (tileRow > 0 && $adjTile.attr("data-val") === tileVal && $adjTile.attr("data-new") !== "true" ) {
           console.log("MATCH");
           // delete the other two tiles
@@ -69,6 +95,8 @@ Game.prototype.moveTile = function(tile, direction) {
 
       // remove flags
       $('.tile').attr("data-new", "false");
+
+      // check if anything happened (so whether a new tile should be added)
       break;
 
     case 40: //down
@@ -129,7 +157,7 @@ Game.prototype.moveTile = function(tile, direction) {
   }
 };
 
-Game.prototype.get_empty_spaces = function() {
+Game.prototype.getEmptySpaces = function() {
   var indexes = [], i, j;
   for (i = 0; i < this.board.length; i++) {
     for (j = 0; j < this.board[i].length; j++) {
@@ -153,10 +181,11 @@ Game.prototype.addTile = function () {
   }
 
   // figure out which spaces are empty
-  var avail = this.get_empty_spaces();
+  var avail = this.getEmptySpaces();
 
   // pick one (each is in the form [row, column])
   var dest = avail[Math.floor(Math.random() * avail.length)];
+
 
   // add tile to the board in an empty space
   var $div = $('<div class="tile"></div>');
@@ -189,6 +218,7 @@ $(document).ready(function() {
       var tile = $('.tile');
       game.moveTile(tile, event.which);
       game.addTile();
+      game.isGameLost();
     }
   });
 });
