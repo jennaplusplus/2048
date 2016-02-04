@@ -39,16 +39,17 @@ Game.prototype.moveTile = function(tile, direction) {
           currentRow--;
         }
 
-        // check if above tile is a match ** AND the match is not a new tile
+        // check if above tile is a match AND the match is not a new tile
         var tileRow = $(currentTile).attr("data-row").replace("r", "");
         var tileCol = $(currentTile).attr("data-col").replace("c", "");
         var tileVal = $(currentTile).attr("data-val");
         var $adjTile = $(g.getTile(tileRow - 1, tileCol));
+        
         if (tileRow > 0 && $adjTile.attr("data-val") === tileVal && $adjTile.attr("data-new") !== "true" ) {
           console.log("MATCH");
           // delete the other two tiles
           $(currentTile).remove();
-          $(g.getTile(tileRow - 1, tileCol)).remove();
+          $adjTile.remove();
 
           // create a new tile with a flag on it
           var $newTile = $('<div class="tile"></div>');
