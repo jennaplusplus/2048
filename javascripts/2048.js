@@ -3,7 +3,9 @@ var Game = function() {
   this.addTile();
   this.addTile();
 };
-
+// Game.prototype.isMovePossible = function(board, direction) {
+//
+// };
 Game.prototype.getTile = function(row, col, val) {
   if (val !== undefined) {
     return '.tile[data-row="r' + row + '"][data-col="c' + col + '"][data-val="' + val + '"]';
@@ -11,7 +13,6 @@ Game.prototype.getTile = function(row, col, val) {
     return '.tile[data-row="r' + row + '"][data-col="c' + col + '"]';
   }
 };
-
 Game.prototype.moveTile = function(tile, direction) {
   var b = this.board;
   var g = this;
@@ -19,15 +20,18 @@ Game.prototype.moveTile = function(tile, direction) {
   var currentRow;
   var currentCol;
   var locations = [];
+  var tileRow;
+  var tileCol;
+  var tileVal;
+  var $adjTile;
+
   for (var t = 0; t < tile.length; t++) {
     var curr = tile[t];
     locations.push([$(curr).attr("data-row").replace("r", ""), $(curr).attr("data-col").replace("c", "")]);
   }
-
   switch(direction) {
     case 38: //up
       console.log('up');
-
       locations.sort();
       locations.forEach(function(loc) {
         currentTile = $(g.getTile(loc[0],loc[1]))[0];
@@ -38,19 +42,16 @@ Game.prototype.moveTile = function(tile, direction) {
           $(currentTile).attr("data-row", "r" + (currentRow-1));  // update tile attributes
           currentRow--;
         }
-
         // check if above tile is a match AND the match is not a new tile
-        var tileRow = $(currentTile).attr("data-row").replace("r", "");
-        var tileCol = $(currentTile).attr("data-col").replace("c", "");
-        var tileVal = $(currentTile).attr("data-val");
-        var $adjTile = $(g.getTile(tileRow - 1, tileCol));
-        
-        if (tileRow > 0 && $adjTile.attr("data-val") === tileVal && $adjTile.attr("data-new") !== "true" ) {
+        tileRow = Number($(currentTile).attr("data-row").replace("r", ""));
+        tileCol = Number($(currentTile).attr("data-col").replace("c", ""));
+        tileVal = Number($(currentTile).attr("data-val"));
+        $adjTile = $(g.getTile(tileRow - 1, tileCol));
+        if (tileRow > 0 && Number($adjTile.attr("data-val")) === tileVal && $adjTile.attr("data-new") !== "true" ) {
           console.log("MATCH");
           // delete the other two tiles
           $(currentTile).remove();
           $adjTile.remove();
-
           // create a new tile with a flag on it
           var $newTile = $('<div class="tile"></div>');
           $newTile.attr("data-row", "r" + (tileRow - 1));
@@ -60,20 +61,17 @@ Game.prototype.moveTile = function(tile, direction) {
           $newTile.html(tileVal * 2);
           $("#gameboard").append($newTile.hide());
           $newTile.delay(200).fadeIn('fast');
-
           // update the board
           b[tileRow - 1][tileCol] = tileVal * 2;
           b[tileRow][tileCol] = 0;
         }
       });
-
       // remove flags
       $('.tile').attr("data-new", "false");
       break;
 
     case 40: //down
       console.log('down');
-
       locations.sort().reverse();
       locations.forEach(function(loc) {
         currentTile = $('.tile[data-row="r' + loc[0] + '"][data-col="c' + loc[1] + '"]')[0];
@@ -84,12 +82,35 @@ Game.prototype.moveTile = function(tile, direction) {
           $(currentTile).attr("data-row", "r" + (currentRow+1));  // update tile attributes
           currentRow++;
         }
+        // check if below tile is a match AND the match is not a new tile
+        tileRow = Number($(currentTile).attr("data-row").replace("r", ""));
+        tileCol = Number($(currentTile).attr("data-col").replace("c", ""));
+        tileVal = Number($(currentTile).attr("data-val"));
+        // this is where the error is - tileRow is adding 1 to numbers above 3
+        $adjTile = $(g.getTile(tileRow + 1, tileCol));
+        if (tileRow < 3 && Number($adjTile.attr("data-val")) === tileVal && $adjTile.attr("data-new") !== "true" ) {
+          console.log("MATCH");
+          // delete the other two tiles
+          $(currentTile).remove();
+          $adjTile.remove();
+          // create a new tile with a flag on it
+          var $newTile = $('<div class="tile"></div>');
+          $newTile.attr("data-row", "r" + (tileRow + 1));
+          $newTile.attr("data-col", "c" + tileCol);
+          $newTile.attr("data-val", tileVal * 2);
+          $newTile.attr("data-new", "true");
+          $newTile.html(tileVal * 2);
+          $("#gameboard").append($newTile.hide());
+          $newTile.delay(200).fadeIn('fast');
+          // update the board
+          b[tileRow + 1][tileCol] = tileVal * 2;
+          b[tileRow][tileCol] = 0;
+        }
       });
-      break;
 
+      break;
     case 37: //left
       console.log('left');
-
       function byColumn (a, b) {
         if (a[1] === b[1]) {
           return 0;
@@ -97,7 +118,6 @@ Game.prototype.moveTile = function(tile, direction) {
         return (a[1] < b[1]) ? -1 : 1;
         }
       }
-
       locations.sort(byColumn);
       locations.forEach(function(loc) {
         currentTile = $('.tile[data-row="r' + loc[0] + '"][data-col="c' + loc[1] + '"]')[0];
@@ -110,10 +130,8 @@ Game.prototype.moveTile = function(tile, direction) {
         }
       });
       break;
-
     case 39: //right
       console.log('right');
-
       locations.sort(byColumn).reverse();
       locations.forEach(function(loc) {
         currentTile = $('.tile[data-row="r' + loc[0] + '"][data-col="c' + loc[1] + '"]')[0];
@@ -128,7 +146,6 @@ Game.prototype.moveTile = function(tile, direction) {
       break;
   }
 };
-
 Game.prototype.get_empty_spaces = function() {
   var indexes = [], i, j;
   for (i = 0; i < this.board.length; i++) {
@@ -140,24 +157,19 @@ Game.prototype.get_empty_spaces = function() {
   }
   return indexes;
 };
-
 Game.prototype.addTile = function () {
   // create a tile with a value of 2 or 4, based on weighted probability
   var rand = Math.random();
-
   var val;
   if (rand < 0.9) {
     val = 2;
   } else {
     val = 4;
   }
-
   // figure out which spaces are empty
   var avail = this.get_empty_spaces();
-
   // pick one (each is in the form [row, column])
   var dest = avail[Math.floor(Math.random() * avail.length)];
-
   // add tile to the board in an empty space
   var $div = $('<div class="tile"></div>');
   $div.attr("data-row", "r" + dest[0]);
@@ -166,11 +178,9 @@ Game.prototype.addTile = function () {
   $div.html(val);
   $("#gameboard").append($div.hide());
   $div.delay(200).fadeIn('fast');
-
   // update board structure with placement of new tile
   this.board[dest[0]][dest[1]] = val;
 };
-
 $(document).ready(function() {
   console.log("ready to go!");
   // Any interactive jQuery functionality
@@ -180,9 +190,7 @@ $(document).ready(function() {
     game.addTile();
     game.addTile();
   });
-
   var game = new Game();
-
   $('body').keydown(function(event){
     var arrows = [37, 38, 39, 40];
     if (arrows.indexOf(event.which) > -1) {
