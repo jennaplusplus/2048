@@ -4,8 +4,12 @@ var Game = function() {
   this.addTile();
 };
 
-Game.prototype.getTile = function(row, col) {
-  return '.tile[data-row="r' + row + '"][data-col="c' + col + '"]';
+Game.prototype.getTile = function(row, col, val) {
+  if (val !== undefined) {
+    return '.tile[data-row="r' + row + '"][data-col="c' + col + '"][data-val="' + val + '"]';
+  } else {
+    return '.tile[data-row="r' + row + '"][data-col="c' + col + '"]';
+  }
 };
 
 Game.prototype.moveTile = function(tile, direction) {
@@ -29,12 +33,41 @@ Game.prototype.moveTile = function(tile, direction) {
         currentTile = $(g.getTile(loc[0],loc[1]))[0];
         currentRow = Number(loc[0]);
         while ((currentRow-1) >= 0 && b[currentRow-1][loc[1]] === 0) {
-          b[currentRow-1][loc[1]] = b[currentRow][loc[1]];  // set value of new space
-          b[currentRow][loc[1]] = 0; // vacate current space
+          b[currentRow-1][loc[1]] = b[currentRow][loc[1]];        // set value of new space
+          b[currentRow][loc[1]] = 0;                              // vacate current space
           $(currentTile).attr("data-row", "r" + (currentRow-1));  // update tile attributes
           currentRow--;
         }
+
+        // check if above tile is a match ** AND the match is not a new tile
+        var tileRow = $(currentTile).attr("data-row").replace("r", "");
+        var tileCol = $(currentTile).attr("data-col").replace("c", "");
+        var tileVal = $(currentTile).attr("data-val");
+        var $adjTile = $(g.getTile(tileRow - 1, tileCol));
+        if (tileRow > 0 && $adjTile.attr("data-val") === tileVal && $adjTile.attr("data-new") !== "true" ) {
+          console.log("MATCH");
+          // delete the other two tiles
+          $(currentTile).remove();
+          $(g.getTile(tileRow - 1, tileCol)).remove();
+
+          // create a new tile with a flag on it
+          var $newTile = $('<div class="tile"></div>');
+          $newTile.attr("data-row", "r" + (tileRow - 1));
+          $newTile.attr("data-col", "c" + tileCol);
+          $newTile.attr("data-val", tileVal * 2);
+          $newTile.attr("data-new", "true");
+          $newTile.html(tileVal * 2);
+          $("#gameboard").append($newTile.hide());
+          $newTile.delay(200).fadeIn('fast');
+
+          // update the board
+          b[tileRow - 1][tileCol] = tileVal * 2;
+          b[tileRow][tileCol] = 0;
+        }
       });
+
+      // remove flags
+      $('.tile').attr("data-new", "false");
       break;
 
     case 40: //down
