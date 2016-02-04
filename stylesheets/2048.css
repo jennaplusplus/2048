@@ -1,3 +1,8 @@
+@font-face {
+  font-family: antiqueOlive;
+  src: url("AntiqueOlive.ttf");
+}
+
 html {
   font: normal normal 30px/1 "Clear Sans", "Helvetica Neue", Arial, sans-serif;
 }
@@ -13,10 +18,12 @@ html {
 
 body {
   text-align: center;
+  background-color: #F98F1B;
 }
 
 #button {
-  background-color: #80C576;
+  background-color: white;
+  border: 5px solid black;
   border-radius: 3px;
   width: 100px;
   height: 40px;
@@ -24,8 +31,8 @@ body {
 }
 
 #reset {
-  color: white;
-  font: normal normal 30px/1 "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+  color: black;
+  font-family: 'antiqueOlive', cursive;
   font-size: 16px;
   text-align: center;
 }
