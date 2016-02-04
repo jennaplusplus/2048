@@ -7,6 +7,12 @@ html {
   font: normal normal 30px/1 "Clear Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
+h1 {
+  font-family: 'antiqueOlive', cursive;
+  font-size: 80px;
+  margin-bottom: 10px;
+}
+
 #gameboard {
   background: #bbada0;
   border-radius: 0.5rem;
@@ -21,20 +27,35 @@ body {
   background-color: #F98F1B;
 }
 
-#button {
+button {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.arrested-development {
+  font-family: 'antiqueOlive', cursive;
+}
+
+
+/*#button {
   background-color: white;
   border: 5px solid black;
   border-radius: 3px;
   width: 100px;
   height: 40px;
   margin: auto;
+  font-family: 'Arial';
 }
 
 #reset {
   color: black;
-  font-family: 'antiqueOlive', cursive;
   font-size: 16px;
   text-align: center;
+}*/
+
+.arrested-development {
+  font-family: 'antiqueOlive', cursive;
+  font-size: 16px;
 }
 
 
