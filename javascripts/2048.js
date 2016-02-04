@@ -75,6 +75,7 @@ Game.prototype.moveTile = function(tile, direction) {
       locations.sort().reverse();
       locations.forEach(function(loc) {
         currentTile = $('.tile[data-row="r' + loc[0] + '"][data-col="c' + loc[1] + '"]')[0];
+        console.log(currentTile);
         currentRow = Number(loc[0]);
         while ((currentRow+1) <= 3 && b[currentRow+1][loc[1]] === 0) {
           b[currentRow+1][loc[1]] = b[currentRow][loc[1]];  // set value of new space
@@ -86,7 +87,6 @@ Game.prototype.moveTile = function(tile, direction) {
         tileRow = Number($(currentTile).attr("data-row").replace("r", ""));
         tileCol = Number($(currentTile).attr("data-col").replace("c", ""));
         tileVal = Number($(currentTile).attr("data-val"));
-        // this is where the error is - tileRow is adding 1 to numbers above 3
         $adjTile = $(g.getTile(tileRow + 1, tileCol));
         if (tileRow < 3 && Number($adjTile.attr("data-val")) === tileVal && $adjTile.attr("data-new") !== "true" ) {
           console.log("MATCH");
@@ -107,8 +107,9 @@ Game.prototype.moveTile = function(tile, direction) {
           b[tileRow][tileCol] = 0;
         }
       });
-
+      $('.tile').attr("data-new", "false");
       break;
+
     case 37: //left
       console.log('left');
       function byColumn (a, b) {
@@ -121,15 +122,42 @@ Game.prototype.moveTile = function(tile, direction) {
       locations.sort(byColumn);
       locations.forEach(function(loc) {
         currentTile = $('.tile[data-row="r' + loc[0] + '"][data-col="c' + loc[1] + '"]')[0];
+        console.log(currentTile);
         currentCol = Number(loc[1]);
-        while ((currentCol-1) >= 0 && b[loc[0]][currentCol-1] === 0) {
+        while ((currentCol -1 ) >= 0 && b[loc[0]][currentCol - 1] === 0) {
           b[loc[0]][currentCol-1] = b[loc[0]][currentCol];  // set value of new space
           b[loc[0]][currentCol] = 0; // vacate current space
-          $(currentTile).attr("data-col", "c" + (currentCol-1));  // update tile attributes
+          $(currentTile).attr("data-col", "c" + (currentCol - 1));  // update tile attributes
           currentCol--;
         }
+        // check if next left tile is a match AND the match is not a new tile
+        tileRow = Number($(currentTile).attr("data-row").replace("r", ""));
+        tileCol = Number($(currentTile).attr("data-col").replace("c", ""));
+        tileVal = Number($(currentTile).attr("data-val"));
+        // this is where the error is - tileRow is adding 1 to numbers above 3
+        $adjTile = $(g.getTile(tileRow, tileCol - 1));
+        if (tileCol > 0 && Number($adjTile.attr("data-val")) === tileVal && $adjTile.attr("data-new") !== "true" ) {
+          console.log("MATCH");
+          // delete the other two tiles
+          $(currentTile).remove();
+          $adjTile.remove();
+          // create a new tile with a flag on it
+          var $newTile = $('<div class="tile"></div>');
+          $newTile.attr("data-row", "r" + (tileRow));
+          $newTile.attr("data-col", "c" + tileCol - 1);
+          $newTile.attr("data-val", tileVal * 2);
+          $newTile.attr("data-new", "true");
+          $newTile.html(tileVal * 2);
+          $("#gameboard").append($newTile.hide());
+          $newTile.delay(200).fadeIn('fast');
+          // update the board
+          b[tileRow][tileCol - 1] = tileVal * 2;
+          b[tileRow][tileCol] = 0;
+        }
       });
+      $('.tile').attr("data-new", "false");
       break;
+
     case 39: //right
       console.log('right');
       locations.sort(byColumn).reverse();
