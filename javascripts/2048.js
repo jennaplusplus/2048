@@ -1,5 +1,5 @@
 var Game = function() {
-  this.board = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]];
+  this.board = [[2, 4, 6, 8],[10, 12, 14, 16],[, 0, 0, 0],[0, 0, 0, 0]];
   this.addTile();
   this.addTile();
 };
@@ -9,6 +9,32 @@ Game.prototype.getTile = function(row, col, val) {
     return '.tile[data-row="r' + row + '"][data-col="c' + col + '"][data-val="' + val + '"]';
   } else {
     return '.tile[data-row="r' + row + '"][data-col="c' + col + '"]';
+  }
+};
+
+Game.prototype.isGameLost = function() {
+  var matches;
+
+  if (this.getEmptySpaces().length === 0) {
+    // check if there are any adjacent tiles of the same value
+    matches = 0;
+    for (var i = 0; i < this.board.length - 1; i++) {
+      for (var j = 0; j < this.board[i].length - 1; j++) {
+        if (this.board[i][j] === this.board[i][j+1]) {
+          matches += 1;
+        } else if (this.board[i][j] === this.board[i+1][j]) {
+          matches += 1;
+        }
+      }
+    }
+    if (matches === 0) {
+      console.log("GAME OVER");
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
   }
 };
 
@@ -196,7 +222,7 @@ Game.prototype.moveTile = function(tile, direction) {
       break;
   }
 };
-Game.prototype.get_empty_spaces = function() {
+Game.prototype.getEmptySpaces = function() {
   var indexes = [], i, j;
   for (i = 0; i < this.board.length; i++) {
     for (j = 0; j < this.board[i].length; j++) {
@@ -217,7 +243,7 @@ Game.prototype.addTile = function () {
     val = 4;
   }
   // figure out which spaces are empty
-  var avail = this.get_empty_spaces();
+  var avail = this.getEmptySpaces();
   // pick one (each is in the form [row, column])
   var dest = avail[Math.floor(Math.random() * avail.length)];
   // add tile to the board in an empty space
@@ -247,6 +273,7 @@ $(document).ready(function() {
     if (arrows.indexOf(event.which) > -1) {
       var tile = $('.tile');
       game.moveTile(tile, event.which);
+      game.isGameLost();
       game.addTile();
     }
   });
