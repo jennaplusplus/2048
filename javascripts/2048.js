@@ -24,6 +24,7 @@ Game.prototype.moveTile = function(tile, direction) {
   var tileCol;
   var tileVal;
   var $adjTile;
+  var $newTile;
 
   for (var t = 0; t < tile.length; t++) {
     var curr = tile[t];
@@ -34,7 +35,7 @@ Game.prototype.moveTile = function(tile, direction) {
       console.log('up');
       locations.sort();
       locations.forEach(function(loc) {
-        currentTile = $(g.getTile(loc[0],loc[1]))[0];
+        currentTile = $(g.getTile(loc[0],loc[1]));
         currentRow = Number(loc[0]);
         while ((currentRow-1) >= 0 && b[currentRow-1][loc[1]] === 0) {
           b[currentRow-1][loc[1]] = b[currentRow][loc[1]];        // set value of new space
@@ -53,7 +54,7 @@ Game.prototype.moveTile = function(tile, direction) {
           $(currentTile).remove();
           $adjTile.remove();
           // create a new tile with a flag on it
-          var $newTile = $('<div class="tile"></div>');
+          $newTile = $('<div class="tile"></div>');
           $newTile.attr("data-row", "r" + (tileRow - 1));
           $newTile.attr("data-col", "c" + tileCol);
           $newTile.attr("data-val", tileVal * 2);
@@ -74,8 +75,7 @@ Game.prototype.moveTile = function(tile, direction) {
       console.log('down');
       locations.sort().reverse();
       locations.forEach(function(loc) {
-        currentTile = $('.tile[data-row="r' + loc[0] + '"][data-col="c' + loc[1] + '"]')[0];
-        console.log(currentTile);
+        currentTile = $(g.getTile(loc[0],loc[1]));
         currentRow = Number(loc[0]);
         while ((currentRow+1) <= 3 && b[currentRow+1][loc[1]] === 0) {
           b[currentRow+1][loc[1]] = b[currentRow][loc[1]];  // set value of new space
@@ -94,7 +94,7 @@ Game.prototype.moveTile = function(tile, direction) {
           $(currentTile).remove();
           $adjTile.remove();
           // create a new tile with a flag on it
-          var $newTile = $('<div class="tile"></div>');
+          $newTile = $('<div class="tile"></div>');
           $newTile.attr("data-row", "r" + (tileRow + 1));
           $newTile.attr("data-col", "c" + tileCol);
           $newTile.attr("data-val", tileVal * 2);
@@ -121,8 +121,7 @@ Game.prototype.moveTile = function(tile, direction) {
       }
       locations.sort(byColumn);
       locations.forEach(function(loc) {
-        currentTile = $('.tile[data-row="r' + loc[0] + '"][data-col="c' + loc[1] + '"]')[0];
-        console.log(currentTile);
+        currentTile = $(g.getTile(loc[0],loc[1]));
         currentCol = Number(loc[1]);
         while ((currentCol -1 ) >= 0 && b[loc[0]][currentCol - 1] === 0) {
           b[loc[0]][currentCol-1] = b[loc[0]][currentCol];  // set value of new space
@@ -142,7 +141,7 @@ Game.prototype.moveTile = function(tile, direction) {
           $(currentTile).remove();
           $adjTile.remove();
           // create a new tile with a flag on it
-          var $newTile = $('<div class="tile"></div>');
+          $newTile = $('<div class="tile"></div>');
           $newTile.attr("data-row", "r" + (tileRow));
           $newTile.attr("data-col", "c" + (tileCol - 1));
           $newTile.attr("data-val", tileVal * 2);
@@ -162,7 +161,7 @@ Game.prototype.moveTile = function(tile, direction) {
       console.log('right');
       locations.sort(byColumn).reverse();
       locations.forEach(function(loc) {
-        currentTile = $('.tile[data-row="r' + loc[0] + '"][data-col="c' + loc[1] + '"]')[0];
+        currentTile = $(g.getTile(loc[0],loc[1]));
         currentCol = Number(loc[1]);
         while ((currentCol+1) <= 3 && b[loc[0]][currentCol+1] === 0) {
           b[loc[0]][currentCol+1] = b[loc[0]][currentCol];  // set value of new space
@@ -181,7 +180,7 @@ Game.prototype.moveTile = function(tile, direction) {
           $(currentTile).remove();
           $adjTile.remove();
           // create a new tile with a flag on it
-          var $newTile = $('<div class="tile"></div>');
+          $newTile = $('<div class="tile"></div>');
           $newTile.attr("data-row", "r" + (tileRow));
           $newTile.attr("data-col", "c" + (tileCol + 1));
           $newTile.attr("data-val", tileVal * 2);
