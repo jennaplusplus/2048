@@ -3,9 +3,7 @@ var Game = function() {
   this.addTile();
   this.addTile();
 };
-// Game.prototype.isMovePossible = function(board, direction) {
-//
-// };
+
 Game.prototype.getTile = function(row, col, val) {
   if (val !== undefined) {
     return '.tile[data-row="r' + row + '"][data-col="c' + col + '"][data-val="' + val + '"]';
@@ -13,6 +11,7 @@ Game.prototype.getTile = function(row, col, val) {
     return '.tile[data-row="r' + row + '"][data-col="c' + col + '"]';
   }
 };
+
 Game.prototype.moveTile = function(tile, direction) {
   var b = this.board;
   var g = this;
@@ -232,6 +231,7 @@ Game.prototype.addTile = function () {
   // update board structure with placement of new tile
   this.board[dest[0]][dest[1]] = val;
 };
+
 $(document).ready(function() {
   console.log("ready to go!");
   // Any interactive jQuery functionality
