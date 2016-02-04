@@ -196,7 +196,7 @@ Game.prototype.moveTile = function(tile, direction) {
       break;
   }
 };
-Game.prototype.get_empty_spaces = function() {
+Game.prototype.getEmptySpaces = function() {
   var indexes = [], i, j;
   for (i = 0; i < this.board.length; i++) {
     for (j = 0; j < this.board[i].length; j++) {
@@ -217,7 +217,7 @@ Game.prototype.addTile = function () {
     val = 4;
   }
   // figure out which spaces are empty
-  var avail = this.get_empty_spaces();
+  var avail = this.getEmptySpaces();
   // pick one (each is in the form [row, column])
   var dest = avail[Math.floor(Math.random() * avail.length)];
   // add tile to the board in an empty space
