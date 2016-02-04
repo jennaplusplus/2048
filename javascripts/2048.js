@@ -144,7 +144,7 @@ Game.prototype.moveTile = function(tile, direction) {
           // create a new tile with a flag on it
           var $newTile = $('<div class="tile"></div>');
           $newTile.attr("data-row", "r" + (tileRow));
-          $newTile.attr("data-col", "c" + tileCol - 1);
+          $newTile.attr("data-col", "c" + (tileCol - 1));
           $newTile.attr("data-val", tileVal * 2);
           $newTile.attr("data-new", "true");
           $newTile.html(tileVal * 2);
@@ -170,7 +170,31 @@ Game.prototype.moveTile = function(tile, direction) {
           $(currentTile).attr("data-col", "c" + (currentCol+1));  // update tile attributes
           currentCol++;
         }
+        // check if below tile is a match AND the match is not a new tile
+        tileRow = Number($(currentTile).attr("data-row").replace("r", ""));
+        tileCol = Number($(currentTile).attr("data-col").replace("c", ""));
+        tileVal = Number($(currentTile).attr("data-val"));
+        $adjTile = $(g.getTile(tileRow, tileCol + 1));
+        if (tileCol < 3 && Number($adjTile.attr("data-val")) === tileVal && $adjTile.attr("data-new") !== "true" ) {
+          console.log("MATCH");
+          // delete the other two tiles
+          $(currentTile).remove();
+          $adjTile.remove();
+          // create a new tile with a flag on it
+          var $newTile = $('<div class="tile"></div>');
+          $newTile.attr("data-row", "r" + (tileRow));
+          $newTile.attr("data-col", "c" + (tileCol + 1));
+          $newTile.attr("data-val", tileVal * 2);
+          $newTile.attr("data-new", "true");
+          $newTile.html(tileVal * 2);
+          $("#gameboard").append($newTile.hide());
+          $newTile.delay(200).fadeIn('fast');
+          // update the board
+          b[tileRow][tileCol + 1] = tileVal * 2;
+          b[tileRow][tileCol] = 0;
+        }
       });
+      $('.tile').attr("data-new", "false");
       break;
   }
 };
