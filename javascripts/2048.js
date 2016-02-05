@@ -2,6 +2,7 @@ var Game = function() {
   this.board = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]];
   this.addTile();
   this.addTile();
+  this.score = 0;
 };
 
 Game.prototype.getTile = function(row, col, val) {
@@ -24,6 +25,7 @@ Game.prototype.moveTile = function(tile, direction) {
   var tileVal;
   var $adjTile;
   var $newTile;
+  var score;
 
   for (var t = 0; t < tile.length; t++) {
     var curr = tile[t];
@@ -64,6 +66,8 @@ Game.prototype.moveTile = function(tile, direction) {
           // update the board
           b[tileRow - 1][tileCol] = tileVal * 2;
           b[tileRow][tileCol] = 0;
+          g.score += Number(tileVal * 2);
+          $("#scoreboard").html("<p>" + g.score + "</p>");
         }
       });
       // remove flags
@@ -104,6 +108,8 @@ Game.prototype.moveTile = function(tile, direction) {
           // update the board
           b[tileRow + 1][tileCol] = tileVal * 2;
           b[tileRow][tileCol] = 0;
+          g.score += Number(tileVal * 2);
+          $("#scoreboard").html("<p>" + g.score + "</p>");
         }
       });
       $('.tile').attr("data-new", "false");
@@ -151,6 +157,9 @@ Game.prototype.moveTile = function(tile, direction) {
           // update the board
           b[tileRow][tileCol - 1] = tileVal * 2;
           b[tileRow][tileCol] = 0;
+          g.score += Number(tileVal * 2);
+          $("#scoreboard").html("<p>" + g.score + "</p>");
+          console.log(g.score);
         }
       });
       $('.tile').attr("data-new", "false");
@@ -190,6 +199,9 @@ Game.prototype.moveTile = function(tile, direction) {
           // update the board
           b[tileRow][tileCol + 1] = tileVal * 2;
           b[tileRow][tileCol] = 0;
+          g.score += Number(tileVal * 2);
+          $("#scoreboard").html("<p>" + g.score + "</p>");
+          console.log(g.score);
         }
       });
       $('.tile').attr("data-new", "false");
