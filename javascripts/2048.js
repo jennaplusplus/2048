@@ -3,6 +3,7 @@ var Game = function() {
   this.addTile();
   this.addTile();
   this.score = 0;
+  this.isGettingNewTile = true;
 };
 
 Game.prototype.getTile = function(row, col, val) {
@@ -13,8 +14,20 @@ Game.prototype.getTile = function(row, col, val) {
   }
 };
 
+Game.prototype.shouldGetNewTile = function(before, after) {
+  if (JSON.stringify(before) === JSON.stringify(after)) {
+    console.log("no tile for you");
+    this.isGettingNewTile = false;
+  } else if (this.getEmptySpaces().length === 0) {
+    this.isGettingNewTile = false;
+  } else {
+    this.isGettingNewTile = true;
+  }
+};
+
 Game.prototype.moveTile = function(tile, direction) {
   var b = this.board;
+  var boardDupe = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]];
   var g = this;
   var currentTile;
   var currentRow;
@@ -26,6 +39,12 @@ Game.prototype.moveTile = function(tile, direction) {
   var $adjTile;
   var $newTile;
   var score;
+
+  for (var i = 0; i < this.board.length; i++) {
+    for (var j = 0; j < this.board[i].length; j++) {
+      boardDupe[i][j] = this.board[i][j];
+    }
+  }
 
   for (var t = 0; t < tile.length; t++) {
     var curr = tile[t];
@@ -72,6 +91,10 @@ Game.prototype.moveTile = function(tile, direction) {
       });
       // remove flags
       $('.tile').attr("data-new", "false");
+
+      // update whether a new tile should be added
+      g.shouldGetNewTile(boardDupe, g.board);
+
       break;
 
     case 40: //down
@@ -113,6 +136,9 @@ Game.prototype.moveTile = function(tile, direction) {
         }
       });
       $('.tile').attr("data-new", "false");
+
+      // update whether a new tile should be added
+      g.shouldGetNewTile(boardDupe, g.board);
       break;
 
     case 37: //left
@@ -163,6 +189,9 @@ Game.prototype.moveTile = function(tile, direction) {
         }
       });
       $('.tile').attr("data-new", "false");
+
+      // update whether a new tile should be added
+      g.shouldGetNewTile(boardDupe, g.board);
       break;
 
     case 39: //right
@@ -205,6 +234,9 @@ Game.prototype.moveTile = function(tile, direction) {
         }
       });
       $('.tile').attr("data-new", "false");
+
+      // update whether a new tile should be added
+      g.shouldGetNewTile(boardDupe, g.board);
       break;
   }
 };
@@ -248,7 +280,7 @@ Game.prototype.addTile = function () {
 Game.prototype.won = function(){
   for (i = 0; i < this.board.length; i++) {
     for (j = 0; j < this.board[i].length; j++) {
-      if (this.board[i][j] === 4) {
+      if (this.board[i][j] === 2048) {
         console.log("You win!!!");
         return true;
       }
@@ -272,9 +304,9 @@ $(document).ready(function() {
       var tile = $('.tile');
       game.moveTile(tile, event.which);
       $("#scoreboard").html("<p>" + game.score + "</p>");
-      if (game.won() !== true) {
+      if (game.won() !== true && game.isGettingNewTile === true) {
         game.addTile();
-      } else {
+      } else if (game.won() === true) {
         $("#scoreboard").html("<p>" + game.score + "</p>");
         var div = $('<div class = "won_message"></div>');
         var winMessage = $('<p></p>');
