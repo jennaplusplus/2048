@@ -18,7 +18,7 @@ body {
 #button {
   background-color: #80C576;
   border-radius: 3px;
-  width: 100px;
+  width: 120px;
   height: 40px;
   margin: auto;
 }
@@ -28,6 +28,7 @@ body {
   font: normal normal 30px/1 "Clear Sans", "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
   text-align: center;
+  padding-top: 10%;
 }
 
 #scoreboard {
@@ -36,7 +37,11 @@ body {
   background-color: #bbada0;
   width: 100px;
   border-radius: 3px;
+  margin: 0 auto;
+  height: 50px;
+  text-align: center;  
 }
+
 
 
 .cell {

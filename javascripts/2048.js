@@ -244,6 +244,13 @@ Game.prototype.addTile = function () {
   this.board[dest[0]][dest[1]] = val;
 };
 
+Game.prototype.won = function(){
+  if (this.board.includes(2048))
+  return true;
+  console.log("You win!!!");
+  };
+};
+
 $(document).ready(function() {
   console.log("ready to go!");
   // Any interactive jQuery functionality
@@ -259,7 +266,14 @@ $(document).ready(function() {
     if (arrows.indexOf(event.which) > -1) {
       var tile = $('.tile');
       game.moveTile(tile, event.which);
+      if (game.won() === false) {
       game.addTile();
+    } else {
+    $("#scoreboard").html("<p>" + g.score + "</p>");
+      var div = $('<div class = "won_message"></div>');
+      var winMessage = $('<p></p>');
+      winMessage.text("You won!");
+      div.append(winMessage);
     }
   });
 });
