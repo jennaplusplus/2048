@@ -244,6 +244,18 @@ Game.prototype.addTile = function () {
   this.board[dest[0]][dest[1]] = val;
 };
 
+
+Game.prototype.won = function(){
+  for (i = 0; i < this.board.length; i++) {
+    for (j = 0; j < this.board[i].length; j++) {
+      if (this.board[i][j] === 4) {
+        console.log("You win!!!");
+        return true;
+      }
+    }
+  }
+};
+
 $(document).ready(function() {
   console.log("ready to go!");
   // Any interactive jQuery functionality
@@ -259,7 +271,17 @@ $(document).ready(function() {
     if (arrows.indexOf(event.which) > -1) {
       var tile = $('.tile');
       game.moveTile(tile, event.which);
-      game.addTile();
+      $("#scoreboard").html("<p>" + game.score + "</p>");
+      if (game.won() !== true) {
+        game.addTile();
+      } else {
+        $("#scoreboard").html("<p>" + game.score + "</p>");
+        var div = $('<div class = "won_message"></div>');
+        var winMessage = $('<p></p>');
+        winMessage.text("You won!");
+        div.append(winMessage);
+        $('body').append(div);
+      }
     }
   });
 });
