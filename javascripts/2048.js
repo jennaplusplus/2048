@@ -1,5 +1,6 @@
 var Game = function() {
-  this.board = [[2, 4, 6, 8],[10, 12, 14, 16],[, 0, 0, 0],[0, 0, 0, 0]];
+  this.board = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]];
+  this.score = 0;
   this.addTile();
   this.addTile();
 };
