@@ -245,9 +245,13 @@ Game.prototype.addTile = function () {
 };
 
 Game.prototype.won = function(){
-  if (this.board.includes(2048)){
-    console.log("You win!!!");
-    return true;
+  for (i = 0; i < this.board.length; i++) {
+    for (j = 0; j < this.board[i].length; j++) {
+      if (this.board[i][j] === 4) {
+        console.log("You win!!!");
+        return true;
+      }
+    }
   }
 };
 
@@ -266,14 +270,16 @@ $(document).ready(function() {
     if (arrows.indexOf(event.which) > -1) {
       var tile = $('.tile');
       game.moveTile(tile, event.which);
+      $("#scoreboard").html("<p>" + game.score + "</p>");
       if (game.won() !== true) {
         game.addTile();
       } else {
-        $("#scoreboard").html("<p>" + g.score + "</p>");
+        $("#scoreboard").html("<p>" + game.score + "</p>");
         var div = $('<div class = "won_message"></div>');
         var winMessage = $('<p></p>');
         winMessage.text("You won!");
         div.append(winMessage);
+        $('body').append(div);
       }
     }
   });
