@@ -14,6 +14,44 @@ Game.prototype.getTile = function(row, col, val) {
   }
 };
 
+Game.prototype.isGameLost = function() {
+  var matches;
+  var i;
+  var j;
+
+  if (this.getEmptySpaces().length === 0) {
+    // check if there are any adjacent tiles of the same value
+    matches = 0;
+
+    // check for matches within rows
+    for (i = 0; i < this.board.length - 1; i++) {
+      for (j = 0; j < this.board[i].length; j++) {
+        if (this.board[i][j] === this.board[i][j+1]) {
+          matches += 1;
+        }
+      }
+    }
+
+    // check within columns
+    for (i = 0; i < this.board.length; i++) {
+      for (j = 0; j < this.board[i].length - 1; j++) {
+        if (this.board[i][j] === this.board[i][j+1]) {
+          matches += 1;
+        }
+      }
+    }
+
+    if (matches === 0) {
+      console.log("GAME OVER");
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+};
+
 Game.prototype.shouldGetNewTile = function(before, after) {
   if (JSON.stringify(before) === JSON.stringify(after)) {
     console.log("no tile for you");
@@ -230,7 +268,7 @@ Game.prototype.moveTile = function(tile, direction) {
           b[tileRow][tileCol] = 0;
           g.score += Number(tileVal * 2);
           $("#scoreboard").html("<p>" + g.score + "</p>");
-          console.log(g.score);
+          // console.log(g.score);
         }
       });
       $('.tile').attr("data-new", "false");
@@ -306,6 +344,8 @@ $(document).ready(function() {
       $("#scoreboard").html("<p>" + game.score + "</p>");
       if (game.won() !== true && game.isGettingNewTile === true) {
         game.addTile();
+      } else if (game.isGameLost() === true) {
+        console.log("GAME OVER");
       } else if (game.won() === true) {
         $("#scoreboard").html("<p>" + game.score + "</p>");
         var div = $('<div class = "won_message"></div>');
