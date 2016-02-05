@@ -341,18 +341,22 @@ $(document).ready(function() {
     if (arrows.indexOf(event.which) > -1) {
       var tile = $('.tile');
       game.moveTile(tile, event.which);
-      $("#scoreboard").html("<p>" + game.score + "</p>");
+      $("#scoreboard").html("<p> Score: " + game.score + "</p>");
       if (game.won() !== true && game.isGettingNewTile === true) {
         game.addTile();
       } else if (game.isGameLost() === true) {
         console.log("GAME OVER");
-      } else if (game.won() === true) {
-        $("#scoreboard").html("<p>" + game.score + "</p>");
-        var div = $('<div class = "won_message"></div>');
-        var winMessage = $('<p></p>');
-        winMessage.text("You won!");
-        div.append(winMessage);
-        $('body').append(div);
+      } else if (game.won() === true){
+        swal({
+          title: "YOU WON!",
+          text: "Do you want to play again?",
+          showCancelButton: false,
+          closeOnConfirm: true,
+          confirmButtonText: "Yes, play again!",
+          confirmButtonColor: "#006666"
+        }, function() {
+            window.location.reload();
+        });
       }
     }
   });
