@@ -247,7 +247,7 @@ Game.prototype.addTile = function () {
 Game.prototype.won = function(){
   if (this.board.includes(2048)){
     console.log("You win!!!");
-  return true;
+    return true;
   }
 };
 
@@ -266,7 +266,7 @@ $(document).ready(function() {
     if (arrows.indexOf(event.which) > -1) {
       var tile = $('.tile');
       game.moveTile(tile, event.which);
-      if (game.won() === false) {
+      if (game.won() !== true) {
         game.addTile();
       } else {
         $("#scoreboard").html("<p>" + g.score + "</p>");
