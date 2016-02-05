@@ -245,10 +245,10 @@ Game.prototype.addTile = function () {
 };
 
 Game.prototype.won = function(){
-  if (this.board.includes(2048))
+  if (this.board.includes(2048)){
+    console.log("You win!!!");
   return true;
-  console.log("You win!!!");
-  };
+  }
 };
 
 $(document).ready(function() {
@@ -267,13 +267,14 @@ $(document).ready(function() {
       var tile = $('.tile');
       game.moveTile(tile, event.which);
       if (game.won() === false) {
-      game.addTile();
-    } else {
-    $("#scoreboard").html("<p>" + g.score + "</p>");
-      var div = $('<div class = "won_message"></div>');
-      var winMessage = $('<p></p>');
-      winMessage.text("You won!");
-      div.append(winMessage);
+        game.addTile();
+      } else {
+        $("#scoreboard").html("<p>" + g.score + "</p>");
+        var div = $('<div class = "won_message"></div>');
+        var winMessage = $('<p></p>');
+        winMessage.text("You won!");
+        div.append(winMessage);
+      }
     }
   });
 });
